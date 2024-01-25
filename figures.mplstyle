@@ -1,0 +1,7 @@
+text.usetex : true
+font.size : 22
+axes.titlesize : 22
+axes.labelsize : 22
+xtick.labelsize : 22
+ytick.labelsize : 22
+legend.fontsize : 18
