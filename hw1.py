@@ -2,7 +2,7 @@ from argparse import Namespace
 
 from hw1.argparser import parse_args
 from hw1.simulation import find_lagrange_points, initialize_system
-from hw1.visualize import plot_gravity, plot_potential
+from hw1.visualize import plot_gravity, plot_orbits, plot_potential
 
 
 def main(args: Namespace):
@@ -34,6 +34,16 @@ def main(args: Namespace):
         xlim=args.xlim,
         ylim=args.ylim,
         filename=f"vectorplot_M{args.mass_1}_m{args.mass_2}.pdf",
+    )
+
+    # Plot the orbit of the earth and the L2-point
+    plot_orbits(
+        system,
+        radius=[1, lagrange_points[1][0]],
+        labels=["Earth", "JWST"],
+        xlim=args.xlim,
+        ylim=args.ylim,
+        filename=f"orbits_M{args.mass_1}_m{args.mass_2}.pdf",
     )
 
 

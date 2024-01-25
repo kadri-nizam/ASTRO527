@@ -18,7 +18,7 @@ def plot_potential(
     save_fig: bool = True,
     filename: str = "potential.pdf",
     contourf_level=500,
-    contour_level=300,
+    contour_level=80,
 ) -> None:
     N = grid_size
     x = np.linspace(xlim[0], xlim[1], N)
@@ -65,7 +65,7 @@ def plot_gravity(
     lagrange_points: NDArray[np.floating[Any]],
     *,
     grid_size: int = 200,
-    contour_level=300,
+    contour_level=80,
     xlim: list[float] = [-1.5, 1.5],
     ylim: list[float] = [-1.5, 1.5],
     save_fig: bool = True,
@@ -106,8 +106,8 @@ def plot_gravity(
         np.log10(1 + normed_g),
         width=0.0017,
         scale=1 / 0.017,
-        cmap="YlGnBu",
-        # cmap="summer",
+        # cmap="YlGnBu",
+        cmap="inferno",
     )
     plt.colorbar()
 
@@ -115,6 +115,49 @@ def plot_gravity(
         plt.scatter(*point, marker="o", s=160, label=f"L{idx + 1}", zorder=10)
 
     plt.title("Gravitational Acceleration and Lagrange Points")
+    plt.xlabel(r"$x$")
+    plt.ylabel(r"$y$")
+    plt.legend()
+
+    plt.xlim(xlim)
+    plt.ylim(ylim)
+
+    plt.tight_layout()
+
+    if save_fig:
+        plt.savefig(filename, dpi=300)
+
+
+def plot_orbits(
+    system: System,
+    radius: list[float],
+    labels: list[str],
+    *,
+    grid_size: int = 200,
+    contour_level=80,
+    xlim: list[float] = [-1.5, 1.5],
+    ylim: list[float] = [-1.5, 1.5],
+    save_fig: bool = True,
+    filename: str = "orbits.pdf",
+    **kwargs,
+):
+    plt.figure(figsize=(10, 8))
+
+    plot_potential(
+        system,
+        grid_size=grid_size,
+        xlim=xlim,
+        ylim=ylim,
+        contour_level=contour_level,
+        save_fig=False,
+    )
+
+    theta = np.linspace(0, 2 * np.pi, 1000)
+    for r, l in zip(radius, labels):
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        plt.plot(x, y, label=l, **kwargs)
+
     plt.xlabel(r"$x$")
     plt.ylabel(r"$y$")
     plt.legend()
